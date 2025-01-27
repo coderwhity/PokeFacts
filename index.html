@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Facts</title>
+    <style>
+        body {
+            font-family: 'Press Start 2P', sans-serif; /* Use a Pokémon-themed font */
+            background-color: #f0f8ff; /* Light blue background */
+            color: #333; /* Dark text color */
+            text-align: center;
+            padding-top: 100px;
+            margin: 0; /* Remove default margin */
+            height: 100vh; /* Full height of the viewport */
+            display: flex; /* Use flexbox for centering */
+            flex-direction: column; /* Stack children vertically */
+            
+            align-items: center; /* Center horizontally */
+            background-image: url('https://creator.nightcafe.studio/jobs/VMTx9ddLBDYhKsjUIziq/VMTx9ddLBDYhKsjUIziq--2--ihwh7.jpg'); /* Add a Pokémon-themed background image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            animation: fadeIn 1s; /* Fade-in animation for the body */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #fact {
+            width: 60%; /* Adjust width as needed */
+            margin: 20px;
+            font-size: 24px;
+            padding: 20px;
+            border: 2px solid #ffcc00; /* Yellow border */
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, opacity 0.3s; /* Transition for fact display */
+            opacity: 0; /* Start hidden */
+            text-align: center; /* Center text inside the fact box */
+        }
+
+        #fact.show {
+            opacity: 1; /* Show fact */
+            transform: translateY(0); /* Move into view */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: white; /* White background */
+            color: #ff0000; /* Red text */
+            border: 2px solid #ff0000; /* Red border */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Transition for button */
+            font-weight: bold; /* Bold text */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Shadow for button */
+        }
+
+        button:hover {
+            background-color: #ff0000; /* Red background on hover */
+            color: white; /* White text on hover */
+            transform: scale(1.1); /* Scale up on hover */
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #ffcc00; /* Yellow title */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Pokéball animation */
+        #pokeball {
+            width: 100px; /* Adjust size as needed */
+            animation: bounce 1s infinite; /* Bouncing animation */
+            margin: 20px auto; /* Center the Pokéball */
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px); /* Bounce height */
+            }
+            60% {
+                transform: translateY(-10px); /* Bounce height */
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> <!-- Pokémon-themed font -->
+</head>
+<body>
+
+    <h1>Pokémon Facts</h1>
+    <img id="pokeball" src="pokeball.png" alt="Pokéball"> <!-- Pokéball image -->
+    <div id="fact">Click the button to see a Pokémon fact!</div>
+    <button id="factButton">Get a Fact</button>
+
+    <script>
+        let facts = [];
+
+        // Fetch the facts from the JSON file
+        fetch('facts.json')
+            .then(response => response.json())
+            .then(data => {
+                facts = data.facts;
+            })
+            .catch(error => console.error('Error fetching the facts:', error));
+
+        // Function to display a random fact
+        function displayRandomFact() {
+            if (facts.length > 0) {
+                const randomIndex = Math.floor(Math.random() * facts.length);
+                const factElement = document.getElementById('fact');
+                factElement.innerText = facts[randomIndex];
+                factElement.classList.remove('show'); // Hide the fact
+                setTimeout(() => {
+                    factElement.classList.add('show'); // Show the fact with animation
+                }, 10); // Delay to trigger the animation
+            } else {
+                document.getElementById('fact').innerText = 'No facts available.';
+            }
+        }
+
+        // Add event listener to the button
+        document.getElementById('factButton').addEventListener('click', displayRandomFact);
+    </script>
+
+</body>
+</html>
